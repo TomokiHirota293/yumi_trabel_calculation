@@ -26,11 +26,18 @@ def cal_from_to(gsheet,from_name,to_name):
 # 表示するデータフレームの作成
 names = ['亀井', '機田', '田中', '廣田', '中田', '中村','前中']
 
+
 show_df = pd.DataFrame(columns=names, index=names)
+show_df = show_df.fillna(0)
+show_df = show_df.astype(int)
 
 for from_name in names:
     for to_name in names:
-        show_df[to_name].loc[from_name] = cal_from_to(gsheet,from_name,to_name) - cal_from_to(gsheet,to_name,from_name) 
+        if to_name == from_name:
+            show_df[to_name].loc[from_name] = '-'
+        else:
+            show_df[to_name].loc[from_name] = round(cal_from_to(gsheet,from_name,to_name) - cal_from_to(gsheet,to_name,from_name) )
+        
 
 
 # Streamlitでデータを表示
@@ -41,7 +48,7 @@ st.markdown(
     https://docs.google.com/spreadsheets/d/18wjkutmcPoYYfGKD1bz7Cd_VBxlwpQlwFXvjvvx-Rco/edit#gid=0　
     このスプレッドシートに記載されたデータから，誰が誰にいくら払うべきかを算出します．
     ## 表の見方
-    行(横列)の人が縦列の人に支払いをする必要があります．
+    行(横列)の人が列(縦列)の人に支払いをする必要があります．
     '''
             )
 st.dataframe(show_df)
