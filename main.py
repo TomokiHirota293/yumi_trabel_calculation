@@ -30,10 +30,11 @@ show_df = pd.DataFrame(columns=names, index=names)
 
 for from_name in names:
     for to_name in names:
-        show_df[to_name].loc[from_name] = cal_from_to(gsheet,from_name,to_name)
+        show_df[to_name].loc[from_name] = cal_from_to(gsheet,from_name,to_name) - cal_from_to(gsheet,to_name,from_name) 
 
 
 # Streamlitでデータを表示
+
 st.markdown(
     '''
     # 2023年ゆみの会男子旅行立替等料金計算表
